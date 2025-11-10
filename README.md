@@ -1,63 +1,149 @@
-# UbuntuOnDroid
+# DebianOnDroid
 
-Run a full Ubuntu desktop or command-line environment directly on your Android device using **Termux** — no root required.
+Run a full **Debian desktop** or command-line environment directly on your Android device using **Termux** — no root required.
+
+---
 
 ## 🚀 Overview
-UbuntuOnDroid uses **proot-distro** inside Termux to install and launch Ubuntu 23.10 (or later).  
-It also includes setup steps for **GNOME Desktop** and **VNC** access, so you can enjoy a complete Linux experience on mobile.
+**DebianOnDroid** uses **proot-distro** inside Termux to install and launch Debian (Stable branch).  
+It includes a desktop environment selector (GNOME, KDE, or XFCE) and sets up a **VNC server** for full graphical access — turning your phone into a portable Linux workstation.
+
+---
 
 ## 🧩 Features
-- No root access needed  
-- Ubuntu 23.10 (or newer)  
-- GNOME desktop environment  
-- VNC server for remote GUI access  
-- Themed with Ubuntu’s **Yaru** look and feel  
+
+- 🪶 **No root access needed**  
+- 🧱 **Debian (Stable & Lightweight)**  
+- 🖥️ Choose your desktop:
+  - **GNOME** – Modern, feature-rich interface  
+  - **KDE Plasma** – Beautiful and customizable  
+  - **XFCE** – Lightweight and fast (recommended)  
+- 🔒 Includes secure **VNC access**  
+- 🧰 Auto-generates helper scripts (`start-vnc.sh`, `stop-vnc.sh`, `restart-vnc.sh`)  
+- 🌍 Locale and configuration pre-set (UTF-8)  
+
+---
 
 ## 📦 Installation
 
-1. Update Termux and install dependencies:
-   ```bash
-   pkg update -y
-   pkg install proot-distro -y
+### 1. Update Termux and install dependencies
+```bash
+pkg update -y && pkg upgrade -y
+pkg install proot-distro wget -y
+````
 
-
-2. Install Ubuntu:
-
-   ```bash
-   proot-distro install ubuntu
-   ```
-
-3. Log in:
-
-   ```bash
-   proot-distro login ubuntu
-   ```
-
-4. (Optional) Run the setup script:
-
-   ```bash
-   bash install_ubuntu_gnome.sh
-   ```
-
-## 🖥️ Start GNOME Desktop
-
-After setup:
+### 2. Install Debian
 
 ```bash
-proot-distro login ubuntu
-vncserver
+proot-distro install debian
 ```
 
-Then connect from any VNC Viewer app to:
+### 3. Run the setup script
+
+This script will guide you through selecting and installing your desktop environment:
+
+```bash
+bash install_debian_desktop.sh
+```
+
+You can choose between:
+
+* `1` → GNOME
+* `2` → KDE Plasma
+* `3` → XFCE (recommended)
+
+---
+
+## 🖥️ Starting the Desktop
+
+Once installation completes:
+
+```bash
+proot-distro login debian
+~/start-vnc.sh
+```
+
+Then connect from any **VNC Viewer** app to:
 
 ```
 localhost:5901
 ```
 
-## 🧹 Fixing Issues
+💡 The first time you run `vncserver`, you’ll be asked to create a password.
 
-If GNOME shows session or systemd errors:
+---
+
+## 🔧 Helper Scripts
+
+After installation, these scripts will be available inside Debian:
+
+| Script             | Purpose                 |
+| ------------------ | ----------------------- |
+| `~/start-vnc.sh`   | Starts the VNC server   |
+| `~/stop-vnc.sh`    | Stops the VNC server    |
+| `~/restart-vnc.sh` | Restarts the VNC server |
+
+---
+
+## 🧹 Troubleshooting
+
+If your desktop fails to start or GNOME reports systemd/login1 errors:
 
 ```bash
 find /usr -type f -iname "*login1*" -exec rm -f {} \;
+```
+
+If you need to remove an existing distro:
+
+```bash
+proot-distro remove debian
+```
+
+---
+
+## 🔗 Recommended VNC Clients
+
+**For Android:**
+
+* [RealVNC Viewer](https://play.google.com/store/apps/details?id=com.realvnc.viewer.android)
+* [bVNC](https://play.google.com/store/apps/details?id=com.iiordanov.freebVNC)
+* [AVNC (F-Droid)](https://f-droid.org/en/packages/com.gaurav.avnc/)
+
+**For Termux (CLI):**
+
+```bash
+pkg install tigervnc
+vncviewer localhost:5901
+```
+
+---
+
+## 🧠 Quick Start Recap
+
+```bash
+# Login to Debian
+proot-distro login debian
+
+# Start the VNC desktop
+~/start-vnc.sh
+
+# Connect using VNC viewer at localhost:5901
+```
+
+---
+
+## 🧾 Notes
+
+* Debian is more stable and lightweight than Ubuntu inside Termux environments.
+* GNOME and KDE require at least **2GB RAM**. XFCE works well even on **1GB** devices.
+* Installation time ranges from **5–30 minutes**, depending on the desktop choice.
+
+---
+
+**Author:** Random Linux User
+**Updated:** November 2025
+**License:** GNU
+
+---
+
 ```
